@@ -1,0 +1,13 @@
+1、更新erlangnode(主要是groovy文件及service.xml等)、ecc(entitymodel.xml比较主要)两个组件到hot-deploy下， 拷hot-deploy\erlangnode\lib\opterlang.jar到framework\base\lib下。
+
+2、拷贝docment下的core/*.erl文件到erlang/core下， nitrogen/src/pages/web_remotent.erl到nitrogen/src/pages/下（最好先备份一下原来文件）， 修改db_ecc的-define(OfbizNode,ofbiz@itsm).为ofbiz@自己的机器名称，并编译。
+
+3、编译并启动ofbiz, 然后启动ecc9（顺序不能错）, 用http:localhost:8000进nitrogen并添加Group、Monitor及Machine，如果配置等完全正确用web_tools能在ci及ciattribute等实体里查到添加的东西、Machine列表基本能出来， 但编辑等还没好。
+
+4、数据简单流程:dbcs_group、dbcs_machine、dbcs_monitor --> db_ecc --> erlangnode的service.xml的dbecc服务 --> erlangnode\script\DbcsMancine.groovy --> CRUD ecc的entitymodel.xml里定义的CI、CIAttribute等Entity。
+
+5、如果想用zkoss5的代码调试ofbiz后台， 需要改framework\base\config\ofbiz-containers.xml里8080及8009为其他端口号以回避冲突。
+
+6、关于entity的crud等可参考本目录下的Apache+OFBiz+Development+The+Beginners+Tutorial.pdf的7-8章，比较清楚。
+
+

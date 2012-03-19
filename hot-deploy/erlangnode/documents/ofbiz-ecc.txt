@@ -1,0 +1,6 @@
+Ofibz端:测试通过Release11.04版本 (svn: http://svn.apache.org/repos/asf/ofbiz/branches/release11.04)
+1. hot-deploy 目录下 check out erlangnode (http://dev.siteview.com/svn/svIAD/zkoss/erlangnode), ant编译
+2. copy erlangnode\document\hot-deploy-containers.xml to hot-deploy\hot-deploy-containers.xml
+3. 运行ofbiz （startofbiz.bat）（ecc-erlang svecc.bat必须先启动）
+
+运行erlang时，可以在ofbiz窗口看到运行服务输出。

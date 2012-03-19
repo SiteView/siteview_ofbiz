@@ -1,0 +1,6 @@
+1:MySql建立一个名为“openfire”的数据库，编码选择UTF-8
+2:安装openfire_3_7_1.exe，安装路径为“C:\Program Files\Openfire”，访问http://服务器名:9090配置服务器,详见OpenFire与Spark部署.docx
+3：SVN：http://dev.siteview.com/svn/svIAD/zkoss/openfire 下载源代码，部署至ofbiz下hot-deploy目录下
+4：将项目导入eclipse,导入hot-deploy\openfire\build\lib目录下的jar包
+5：Java Application运行com.dragonflow.openfire.starter包中的StartServer.java，若报错是因为openfire找不到本地化文件，将hot-deploy\openfire\build\i18n文件夹下openfire_i18n_zh_CN.properties和hot-deploy\openfire\src\resources\jar文件夹下admin-sidebar.xml copy至ofbiz\bin文件夹下即可
+6：如果运行成功则表示openfire源码加入到ofbiz成功，停止服务器，运行org.ofbiz.base.start包的start.java启动ofbiz也可以启动openfire

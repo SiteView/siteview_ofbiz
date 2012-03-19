@@ -1,0 +1,638 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
+	<description>ecc Services</description>
+	<vendor>Dragonflow Networks, Inc.</vendor>
+	<version>1.0</version>
+	<!-- ofbiz monitor browse service start -->
+	<!--
+		created by zhongping.wang for query data from table monitorfilter
+	-->
+	<service name="QueryMonitorFilter" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorBrowseServices"
+		invoke="queryMonitorFilter">
+		<description>query the new error monitors</description>
+		<attribute name="tablename" mode="IN" type="String" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+		<attribute name="mfid" type="String" mode="IN" />
+	</service>
+	<service name="QueryMonitorLogService" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorBrowseServices"
+		invoke="queryMonitorLog">
+		<description>query monitor logs</description>
+	</service>
+	<!--
+		created by zhongping.wang for query data from table
+		operation_attribute_log by monitorfilter
+	-->
+	<service name="QueryCustomBroswe" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorBrowseServices"
+		invoke="queryCustomBroswe">
+		<description>query the new error monitors</description>
+		<attribute name="tablename" mode="IN" type="String" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+		<!--
+			<attribute name="mfid" type="String" mode="IN" /> <attribute
+			name="entityname" type="String" mode="IN" />
+		-->
+		<attribute name="groupname" type="String" mode="IN" />
+		<!-- 	<attribute name="monitordescripe" type="String" mode="IN" />  -->
+		<attribute name="monitorname" type="String" mode="IN" />
+		<attribute name="monitorstate" type="String" mode="IN" />
+		<attribute name="monitortype" type="String" mode="IN" />
+		<!-- 	<attribute name="monitortypename" type="String" mode="IN" />  -->
+		<!--
+			<attribute name="nodeid" type="String" mode="IN" /> <attribute
+			name="refreshfre" type="String" mode="IN" /> <attribute
+			name="showhidename" type="String" mode="IN" />
+		-->
+		<attribute name="sort" type="String" mode="IN" />
+		<!--
+			<attribute name="sortname" type="String" mode="IN" /> <attribute
+			name="title" type="String" mode="IN" /> <attribute name="tagid"
+			type="String" mode="IN" /> <attribute name="tagname" type="String"
+			mode="IN" />
+		-->
+		<attribute name="startdate" type="String" mode="IN" />
+		<attribute name="enddate" type="String" mode="IN" />
+	</service>
+	<!-- created by zhongping.wang for query the new error monitors -->
+	<service name="QueryNewestError" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorBrowseServices"
+		invoke="queryNewestError">
+		<description>query the new error monitors</description>
+		<attribute name="tablename" mode="IN" type="String" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+		<attribute name="starttime" type="String" mode="IN" />
+		<attribute name="endtime" type="String" mode="IN" />
+		<attribute name="category" type="String" mode="IN" />
+		<attribute name="orderby" type="String" mode="IN" />
+	</service>
+	<service name="ReportStatisticsService" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.siteview.report.ReportStatisticsServices"
+		invoke="statisticReport">
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+	</service>
+	<service name="QueryReportStatisticsService" engine="java"
+		export="true" validate="false" require-new-transaction="true"
+		location="com.dragonflow.siteview.report.ReportStatisticsServices"
+		invoke="queryStatisticsLog">
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+	</service>
+	<service name="QueryOperationIdListService" engine="java"
+		export="true" validate="false" require-new-transaction="true"
+		location="com.dragonflow.siteview.report.ReportStatisticsServices"
+		invoke="queryOperationIdList">
+	</service>
+	<!-- mobile -->
+	<service name="QueryCVactive" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorBrowseServices"
+		invoke="queryCVactive">
+		<description>query the new error monitors</description>
+		<attribute name="tablename" mode="IN" type="String" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+		<attribute name="starttime" type="String" mode="IN" />
+		<attribute name="endtime" type="String" mode="IN" />
+		<attribute name="ids" type="Set" mode="IN" />
+		<attribute name="orderby" type="String" mode="IN" />
+	</service>
+	<service name="QueryCVhistory" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorBrowseServices"
+		invoke="queryCVhistory">
+		<description>query the new error monitors</description>
+		<attribute name="tablename" mode="IN" type="String" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+		<attribute name="starttime" type="String" mode="IN" />
+		<attribute name="endtime" type="String" mode="IN" />
+		<attribute name="ids" type="Set" mode="IN" />
+		<attribute name="orderby" type="String" mode="IN" />
+	</service>
+	<!-- end -->
+	<!-- created by zhongping.wang for query the most error monitors -->
+	<service name="QueryMostError" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorBrowseServices"
+		invoke="queryMostError">
+		<description>query the most error monitors</description>
+		<attribute name="tablename" mode="IN" type="String" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+		<attribute name="starttime" type="String" mode="IN" />
+		<attribute name="endtime" type="String" mode="IN" />
+		<attribute name="category" type="String" mode="IN" />
+		<attribute name="orderby" type="String" mode="IN" />
+	</service>
+	<!-- created by zhongping.wang for query the most browse monitors -->
+	<service name="QueryMostBrowse" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorBrowseServices"
+		invoke="queryMostBrowse">
+		<description>query the new browse monitors</description>
+		<attribute name="tablename" mode="IN" type="String" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+		<attribute name="starttime" type="String" mode="IN" />
+		<attribute name="endtime" type="String" mode="IN" />
+		<attribute name="orderby" type="String" mode="IN" />
+	</service>
+	<!-- ofbiz monitor browse service end -->
+	<!-- Query error contrast -->
+	<service name="QueryErrorContrast" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.siteview.report.ReportDataServices" invoke="queryErrorContrast">
+		<description>show the latest 20 results for the monitor overreview page. </description>
+		<attribute name="tablename" type="String" mode="IN" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+		<attribute name="nodeids" type="String" mode="IN" />
+		<attribute name="begintime" type="String" mode="IN" />
+		<attribute name="endtime" type="String" mode="IN" />
+		<attribute name="orderby" type="String" mode="IN" />
+	</service>
+	<service name="QueryPeriodReportService" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.siteview.report.ReportDataServices" invoke="queryPeriodReport">
+		<attribute name="tablename" type="String" mode="IN" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+		<attribute name="begintime" type="String" mode="IN" />
+		<attribute name="endtime" type="String" mode="IN" />
+		<attribute name="orderby" type="String" mode="IN" />
+	</service>
+	<!-- ofbiz report service start -->
+	<service name="QueryTopReportData" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.siteview.report.LoggerServices" invoke="queryTopReportData">
+		<description>show the latest 20 results for the monitor overreview page. </description>
+		<attribute name="tablename" type="String" mode="IN" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+		<attribute name="operation_id" type="String" mode="IN" />
+		<attribute name="orderby" type="String" mode="IN" />
+		<attribute name="messageout" type="List" mode="OUT" />
+	</service>
+	<!-- end -->
+	<!-- start -->
+	<service name="QueryReportLog" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.LoggerServices" invoke="queryReportLog">
+		<attribute name="tablename" type="String" mode="IN" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+		<attribute name="id" type="String" mode="IN" />
+		<attribute name="orderby" type="String" mode="IN" />
+		<attribute name="where" type="String" mode="IN" />
+		<attribute name="messageout" type="List" mode="OUT" />
+	</service>
+	<service name="StatisticReportLog" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.siteview.report.ReportDataServices" invoke="statisticReportLog">
+		<attribute name="tablename" type="String" mode="IN" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+		<attribute name="id" type="String" mode="IN" />
+		<attribute name="starttime" type="String" mode="IN" />
+		<attribute name="endtime" type="String" mode="IN" />
+		<attribute name="orderby" type="String" mode="IN" />
+		<attribute name="messageout" type="List" mode="OUT" />
+	</service>
+
+	<service name="QueryFishEyeService" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.siteview.report.ReportDataServices" invoke="queryFishEyeService">
+		<attribute name="tablename" type="String" mode="IN" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+		<attribute name="id" type="String" mode="IN" />
+		<attribute name="starttime" type="String" mode="IN" />
+		<attribute name="endtime" type="String" mode="IN" />
+		<attribute name="orderby" type="String" mode="IN" />
+		<attribute name="messageout" type="List" mode="OUT" />
+	</service>
+	<service name="TimeContrastReportLog" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.siteview.report.LoggerServices" invoke="timeContrastReportLog">
+		<attribute name="tablename" type="String" mode="IN" />
+		<attribute name="starttime" type="Date" mode="IN" />
+		<attribute name="method" type="Date" mode="IN" />
+		<attribute name="endTime" type="Date" mode="IN" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="ids" type="Integer" mode="IN" />
+		<attribute name="orderby" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN"></attribute>
+		<attribute name="messageout" type="List" mode="OUT" />
+	</service>
+
+	<!-- end -->
+	<service name="ContrastReportLog" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.siteview.report.ReportDataServices" invoke="contrastReportLog">
+		<attribute name="tablename" type="String" mode="IN" />
+		<attribute name="starttime" type="Date" mode="IN" />
+		<attribute name="endTime" type="Date" mode="IN" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="id" type="Integer" mode="IN" />
+		<attribute name="orderby" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN"></attribute>
+		<attribute name="messageout" type="List" mode="OUT" />
+	</service>
+
+	<service name="ReportSummaryReportLog" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.siteview.report.ReportDataServices" invoke="reportSummaryReportLog">
+		<attribute name="tablename" type="String" mode="IN" />
+		<attribute name="starttime" type="Date" mode="IN" />
+		<attribute name="endTime" type="Date" mode="IN" />
+		<attribute name="ids" type="String" mode="IN" />
+		<attribute name="orderby" type="Integer" mode="IN" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+		<attribute name="messageout" type="List" mode="OUT" />
+	</service>
+	<service name="PerReportLog" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.siteview.report.LoggerServices" invoke="perReportLog">
+		<attribute name="tablename" type="String" mode="IN" />
+		<attribute name="method" type="String" mode="IN" />
+		<attribute name="starttime" type="Date" mode="IN" />
+		<attribute name="endTime" type="Date" mode="IN" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="ids" type="String" mode="IN" />
+		<attribute name="orderby" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN"></attribute>
+		<attribute name="messageout" type="List" mode="OUT" />
+	</service>
+	<service name="MonitorErrorReportLog" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.siteview.report.LoggerServices" invoke="monitorErrorReportLog">
+		<attribute name="tablename" type="String" mode="IN" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="ids" type="String" mode="IN" />
+		<attribute name="orderby" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN"></attribute>
+		<attribute name="messageout" type="List" mode="OUT" />
+	</service>
+
+
+	<service name="QueryReportData" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.siteview.report.LoggerServices" invoke="queryReportData">
+		<attribute name="tablename" type="String" mode="IN" />
+		<attribute name="starttime" type="Date" mode="IN" />
+		<attribute name="endTime" type="Date" mode="IN" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="orderby" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN"></attribute>
+		<attribute name="messageout" type="List" mode="OUT" />
+	</service>
+	<!-- ofbiz report service end -->
+
+	<service name="getNextId" engine="java"
+		location="com.dragonflow.erlangecc.ofbiz.CommonServices" invoke="NextSeqId">
+		<description>Interface to db_ecc.erl, get next sequence id</description>
+		<attribute name="type" type="String" mode="IN" />
+		<attribute name="nextSeqId" type="String" mode="OUT" />
+	</service>
+	<service name="dbcscreate" engine="java"
+		location="com.dragonflow.erlangecc.ofbiz.CommonServices" invoke="DbcsCreate">
+		<description>Interface to db_ecc.erl</description>
+		<attribute name="table" type="String" mode="IN" />
+		<attribute name="inData" type="List" mode="IN" />
+		<attribute name="resp" type="String" mode="OUT" />
+		<attribute name="outData" type="List" mode="OUT" optional="true" />
+	</service>
+
+	<service name="dbcsread" engine="java"
+		location="com.dragonflow.erlangecc.ofbiz.CommonServices" invoke="DbcsRead">
+		<description>Interface to db_ecc.erl</description>
+		<attribute name="table" type="String" mode="IN" />
+		<attribute name="inData" type="List" mode="IN" />
+		<attribute name="resp" type="String" mode="OUT" />
+		<attribute name="outData" type="List" mode="OUT" optional="true" />
+	</service>
+
+	<service name="dbcsupdate" engine="java"
+		location="com.dragonflow.erlangecc.ofbiz.CommonServices" invoke="DbcsUpdate">
+		<description>Interface to db_ecc.erl</description>
+		<attribute name="table" type="String" mode="IN" />
+		<attribute name="inData" type="List" mode="IN" />
+		<attribute name="resp" type="String" mode="OUT" />
+		<attribute name="outData" type="List" mode="OUT" optional="true" />
+	</service>
+
+	<service name="dbcsdelete" engine="java"
+		location="com.dragonflow.erlangecc.ofbiz.CommonServices" invoke="DbcsDelete">
+		<description>Interface to db_ecc.erl</description>
+		<attribute name="table" type="String" mode="IN" />
+		<attribute name="inData" type="List" mode="IN" />
+		<attribute name="resp" type="String" mode="OUT" />
+		<attribute name="outData" type="List" mode="OUT" optional="true" />
+	</service>
+
+	<service name="createGroup" engine="java"
+		location="com.dragonflow.erlangecc.ofbiz.GroupServices" invoke="create">
+		<description>create a new group in entity</description>
+		<attribute name="group" type="List" mode="IN" />
+		<attribute name="resp" type="String" mode="OUT" />
+		<attribute name="outData" type="List" mode="OUT" optional="true" />
+	</service>
+
+	<service name="monitorLogger" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.LoggerServices" invoke="monitorLogger">
+		<description>Log a single monitor into entity</description>
+		<attribute name="monitor" type="List" mode="IN" />
+	</service>
+
+	<service name="monitorLoggers" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.LoggerServices" invoke="monitorLogger">
+		<description>Log a single monitor into entity</description>
+		<attribute name="id" type="String" mode="IN" />
+		<attribute name="name" type="String" mode="IN" />
+		<attribute name="category" type="String" mode="IN" />
+		<attribute name="decription" type="List" mode="IN" />
+		<attribute name="measurement" type="Object" mode="IN" />
+		<attribute name="time" type="Date" mode="IN" />
+	</service>
+
+	<service name="monitorListLogger" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.LoggerServices" invoke="monitorListLogger">
+		<description>Log a list of monitors into entity</description>
+		<attribute name="monitorList" type="List" mode="IN" />
+	</service>
+
+	<service name="alertLogger" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.LoggerServices" invoke="alertlogger">
+		<description>Test List map service</description>
+		<attribute name="listValue" type="List" mode="IN" />
+		<attribute name="loggervalues" type="List" mode="OUT" />
+	</service>
+	<service name="alertloggerquery" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.LoggerServices" invoke="alertloggerquery">
+		<description>Test List map service</description>
+		<attribute name="listValue" type="List" mode="IN" />
+	</service>
+	<service name="alertloggerquerylarge" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.LoggerServices" invoke="alertloggerquerylarge">
+		<description>Test List map service</description>
+		<attribute name="listValue" type="List" mode="IN" />
+	</service>
+	<service name="loggerquery" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.LoggerServices" invoke="loggerquery">
+		<description>Test List map service</description>
+		<attribute name="listValue" type="List" mode="IN" />
+	</service>
+	<service name="makeTestData" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.LoggerServices" invoke="maketestdata">
+		<description>Test List map service</description>
+		<attribute name="listValue" type="List" mode="IN" />
+		<attribute name="loggervalues" type="List" mode="OUT" />
+	</service>
+	<service name="dbeccgroovy" engine="groovy" export="true"
+		validate="false" require-new-transaction="true"
+		location="component://erlangnode/script/DbcsMachine.groovy" invoke="">
+		<description>Test List map service</description>
+		<attribute name="action" type="String" mode="IN" />
+		<attribute name="table" type="String" mode="IN" />
+		<attribute name="inData" type="List" mode="IN" />
+		<attribute name="resp" type="String" mode="OUT" />
+		<attribute name="outData" type="List" mode="OUT" optional="true" />
+	</service>
+
+	<service name="testListMap" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.test.TestServices" invoke="testListMap">
+		<description>Test List map service</description>
+		<attribute name="listMap" type="List" mode="IN" />
+		<attribute name="listValue" type="List" mode="IN" />
+		<attribute name="mapField" type="Map" mode="IN" />
+		<attribute name="message" type="String" mode="IN" optional="true" />
+		<attribute name="resp" type="Atom" mode="OUT" />
+		<attribute name="outList" type="list" mode="OUT" optional="true" />
+		<attribute name="outMap" type="map" mode="OUT" optional="true" />
+		<attribute name="outListMap" type="list" mode="OUT"
+			optional="true" />
+	</service>
+
+	<service name="testErlang" engine="groovy"
+		location="component://erlangnode/script/GroovyServiceTest.groovy"
+		invoke="">
+		<description>Test Erlang Service</description>
+		<attribute name="message" type="String" mode="IN" optional="true" />
+		<attribute name="result" type="String" mode="OUT" />
+	</service>
+
+	<service name="testGroovy" engine="groovy"
+		location="component://erlangnode/script/GroovyServiceTest1.groovy"
+		invoke="">
+		<description>Test Groovy as the service</description>
+		<attribute name="message" type="String" mode="IN" optional="true" />
+		<attribute name="result" type="String" mode="OUT" />
+	</service>
+
+	<service name="testPing" engine="java"
+		location="com.dragonflow.test.TestServices" invoke="testPing">
+		<description>Test Ping as the service</description>
+		<attribute name="message" type="String" mode="IN" optional="true" />
+		<attribute name="result" type="String" mode="OUT" />
+	</service>
+	<service name="testPing1" engine="java"
+		location="com.dragonflow.test.TestServices" invoke="testPing">
+		<description>Test Ping as the service</description>
+		<attribute name="message" type="String" mode="IN" optional="true" />
+		<attribute name="result" type="String" mode="OUT" />
+	</service>
+	<service name="monitorLogger1" engine="simple"
+		default-entity-name="OperationAttributeLog"
+		location="component://erlangnode/script/MonitorServices.xml" invoke="log">
+		<description>store the log data</description>
+		<attribute name="message" type="String" mode="IN" optional="true" />
+		<attribute name="result" type="String" mode="OUT" />
+	</service>
+
+	<!--
+		Monitor proxy service api_monitor_proxy.erl, proxy_mapping.erl
+		-export([get_proxy_list/0, get_proxy_stat/0, get_master_stat/0,
+		get_proxy_mapping_list/0, add_proxy_mapping/2,
+		get_mapping_by_monitor/1, get_mapping_by_proxy/1,
+		remove_proxy_mapping/1, get_master_node/0, get_all_types/0,
+		get_monitor_by_proxy/1, add_monitor/2, get_monitor_stat/1,
+		update_mapping/2, delete_monitor/2, add_proxy/1, remove_proxy/1,
+		update_proxy_name/2 ]).
+	-->
+	<service name="GetProxyList" engine="java"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorProxyServices" invoke="GetProxyList">
+		<description></description>
+	</service>
+	<service name="SetProxyAndMonitorId" engine="java"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorProxyServices" invoke="SetProxyAndMonitorId">
+		<description></description>
+		<attribute name="proxyNode" type="String" mode="IN" />
+		<attribute name="monitorId" type="String" mode="IN" />
+		<attribute name="outData" type="List" mode="OUT" optional="true" />
+	</service>
+	<service name="DelProxyAndMonitorId" engine="java"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorProxyServices" invoke="DelProxyAndMonitorId">
+		<description></description>
+		<attribute name="proxyNode" type="String" mode="IN" />
+		<attribute name="monitorId" type="String" mode="IN" />
+		<attribute name="outData" type="List" mode="OUT" optional="true" />
+	</service>
+	<service name="GetAllProxyAndMonitorId" engine="java"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorProxyServices" invoke="GetAllProxyAndMonitorId">
+		<description></description>
+		<attribute name="outData" type="List" mode="OUT" />
+	</service>
+	<service name="GetMonitorIdByProxy" engine="java"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorProxyServices" invoke="GetMonitorIdByProxy">
+		<description></description>
+		<attribute name="proxyNode" type="String" mode="IN" />
+		<attribute name="outData" type="List" mode="OUT" optional="true" />
+	</service>
+	<service name="GetProxyByMonitorId" engine="java"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorProxyServices" invoke="GetProxyByMonitorId">
+		<description></description>
+		<attribute name="monitorId" type="String" mode="IN" />
+		<attribute name="outData" type="List" mode="OUT" optional="true" />
+	</service>
+	<service name="QueryAlertLogger" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.AlertServices" invoke="queryAlertLogger">
+		<attribute name="tablename" type="String" mode="IN" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+		<attribute name="orderby" type="String" mode="IN" />
+		<attribute name="alertId" type="String" mode="IN"></attribute>
+		<attribute name="alerttype" type="String" mode="IN"></attribute>
+		<attribute name="name" type="String" mode="IN"></attribute>
+		<attribute name="receiver" type="String" mode="IN"></attribute>
+		<attribute name="alert_level" type="String" mode="IN"></attribute>
+		<attribute name="starttime" type="Date" mode="IN"></attribute>
+		<attribute name="endtime" type="Date" mode="IN"></attribute>
+	</service>
+
+	<service name="AllFilter" engine="java" export="true" validate="false"
+		require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorBrowseServices"
+		invoke="allFilter">
+		<attribute name="tablename" type="String" mode="IN" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+		<attribute name="messageout" type="List" mode="OUT" />
+	</service>
+	<service name="addFilter" engine="java" export="true" validate="false"
+		require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorBrowseServices"
+		invoke="addFilter">
+		<attribute name="tablename" type="String" mode="IN" />
+
+		<attribute name="mfid" type="String" mode="IN" />
+		<attribute name="entityname" type="String" mode="IN" />
+		<attribute name="groupname" type="String" mode="IN" />
+		<attribute name="monitordescripe" type="String" mode="IN" />
+		<attribute name="monitorname" type="String" mode="IN" />
+		<attribute name="monitorstate" type="String" mode="IN" />
+		<attribute name="monitortype" type="String" mode="IN" />
+		<attribute name="monitortypename" type="String" mode="IN" />
+		<attribute name="nodeid" type="String" mode="IN" />
+		<attribute name="refreshfre" type="String" mode="IN" />
+		<attribute name="showhidename" type="String" mode="IN" />
+		<attribute name="sort" type="String" mode="IN" />
+		<attribute name="sortname" type="String" mode="IN" />
+		<attribute name="title" type="String" mode="IN" />
+		<attribute name="tagid" type="String" mode="IN" />
+		<attribute name="tagname" type="String" mode="IN" />
+
+		<attribute name="starttime" type="date-time" mode="IN" />
+		<attribute name="endtime" type="date-time" mode="IN" />
+		<attribute name="messageout" type="List" mode="OUT" />
+	</service>
+	<service name="modifyFilter" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorBrowseServices"
+		invoke="modifyFilter">
+		<attribute name="tablename" type="String" mode="IN" />
+
+		<attribute name="mfid" type="String" mode="IN" />
+		<attribute name="entityname" type="String" mode="IN" />
+		<attribute name="groupname" type="String" mode="IN" />
+		<attribute name="monitordescripe" type="String" mode="IN" />
+		<attribute name="monitorname" type="String" mode="IN" />
+		<attribute name="monitorstate" type="String" mode="IN" />
+		<attribute name="monitortype" type="String" mode="IN" />
+		<attribute name="monitortypename" type="String" mode="IN" />
+		<attribute name="nodeid" type="String" mode="IN" />
+		<attribute name="refreshfre" type="String" mode="IN" />
+		<attribute name="showhidename" type="String" mode="IN" />
+		<attribute name="sort" type="String" mode="IN" />
+		<attribute name="sortname" type="String" mode="IN" />
+		<attribute name="title" type="String" mode="IN" />
+		<attribute name="tagid" type="String" mode="IN" />
+		<attribute name="tagname" type="String" mode="IN" />
+		<attribute name="starttime" type="date-time" mode="IN" />
+		<attribute name="endtime" type="date-time" mode="IN" />
+		<attribute name="messageout" type="List" mode="OUT" />
+	</service>
+	<service name="deleteFilter" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorBrowseServices"
+		invoke="deleteFilter">
+		<attribute name="tablename" type="String" mode="IN" />
+
+		<attribute name="mfid" type="String" mode="IN" />
+		<attribute name="messageout" type="List" mode="OUT" />
+	</service>
+	<!-- ofbiz confirmMonitor Log  -->
+	<service name="confirmMonitor" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.ConfirmMonitorServices"
+		invoke="confirmMonitor">
+		<attribute name="tablename" type="String" mode="IN" />
+		<attribute name="mid" type="String" mode="IN" />
+		<attribute name="monitorname" type="String" mode="IN" />
+		<attribute name="groupname" type="String" mode="IN" />
+		<attribute name="monitordescripe" type="String" mode="IN" />
+		<attribute name="category" type="String" mode="IN" />
+		<attribute name="monitorlogdescripe" type="String" mode="IN" />
+	</service>
+
+	<!-- ofbiz save confirmMonitor Log  -->
+	<service name="monitorErrorst" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorError" invoke="monitorError">
+		<attribute name="tablename" type="String" mode="IN" />
+		<attribute name="errortype" type="String" mode="IN" />
+		<attribute name="errordate" type="String" mode="IN" />
+		<attribute name="errortitle" type="String" mode="IN" />
+	</service>
+
+	<!-- ofbiz select confirmMonitor Log  -->
+	<service name="smonitorError" engine="java" export="true"
+		validate="false" require-new-transaction="true"
+		location="com.dragonflow.erlangecc.ofbiz.MonitorError" invoke="smonitorError">
+		<attribute name="tablename" type="String" mode="IN" />
+		<attribute name="from" type="Integer" mode="IN" />
+		<attribute name="to" type="Integer" mode="IN" />
+	</service>
+</services>

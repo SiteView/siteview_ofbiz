@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/entitymodel.xsd">
+	<!-- ========================================================= -->
+	<!-- ======================== Defaults ======================= -->
+	<!-- ========================================================= -->
+	<title>Entity of ECC Component</title>
+	<description>None</description>
+	<copyright></copyright>
+	<version></version>
+
+	<!--
+		问题： what is the meaning of two primary key ? what is the meaning of
+		index ?
+	-->
+	<!--
+		todo: 需要初始化数据，特别是MonitorType and MonitorTypeAttr entity, 这些信息现在是在代码中
+	-->
+
+
+	<!--
+		operation entities: monitoring is one of the operation, 'operation'
+		can be installing new software, upgrade firmware etc.
+	-->
+	<entity entity-name="Operation" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="Operation Entity">
+		<field name="operationId" type="id-ne"></field>
+		<field name="app" type="long-varchar"></field>
+		<field name="operationTypeId" type="id-long-ne"></field>
+		<field name="operationName" type="name"></field>
+		<field name="groupId" type="id"></field>
+		<prim-key field="operationId" />
+		<relation type="one" fk-name="MONITOR_TYPE" rel-entity-name="OperationType">
+			<key-map field-name="operationTypeId" />
+		</relation>
+		<relation type="many" fk-name="MONITOR_ATTRS_LOG"
+			rel-entity-name="OperationAttributeLog">
+			<key-map field-name="operationId" />
+		</relation>
+		<relation type="many" rel-entity-name="OperationTypeAttr">
+			<key-map field-name="operationTypeId" />
+		</relation>
+	</entity>
+	<entity entity-name="OperationAttribute" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="Operation Attribute Summary Entity">
+		<description>Used to store the calculated value for monitor, e.g. daily/weekely/monthly max/min/avg etc.</description>
+		<field name="operationId" type="id-ne"></field>
+		<field name="attrName" type="id-long-ne"></field>
+		<field name="attrValue" type="value"></field>
+		<field name="attrObjValue" type="object"></field>
+		<prim-key field="operationId" />
+		<prim-key field="attrName" />
+		<relation type="one" fk-name="MONITOR_ATTR" rel-entity-name="Operation">
+			<key-map field-name="operationId" />
+		</relation>
+		<relation type="many" rel-entity-name="OperationTypeAttr">
+			<key-map field-name="attrName" />
+		</relation>
+	</entity>
+	<entity entity-name="OperationType" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="Operation Type Entity">
+		<field name="operationTypeId" type="id-long"></field>
+		<field name="parentTypeId" type="id-long"></field>
+		<field name="description" type="description"></field>
+		<prim-key field="operationTypeId" />
+		<relation type="one" fk-name="MONITOR_TYPPAR" title="Parent"
+			rel-entity-name="OperationType">
+			<key-map field-name="parentTypeId" rel-field-name="operationTypeId" />
+		</relation>
+	</entity>
+	<entity entity-name="OperationTypeAttr" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="Operation Type Attribute Entity">
+		<field name="operationTypeId" type="id-long"></field>
+		<field name="attrName" type="id-long-ne"></field>
+		<field name="dataType" type="short-varchar">
+			<description>this value is used to interpret OperationAttribute.attrValue, string,int,float,boolean, atom can learn from \framework\entity\fieldtypemodel</description>
+		</field>
+		<prim-key field="operationTypeId" />
+		<prim-key field="attrName" />
+		<relation type="one" fk-name="MONITOR_TYPATTR"
+			rel-entity-name="OperationType">
+			<key-map field-name="operationTypeId" />
+		</relation>
+		<relation type="many" rel-entity-name="OperationAttribute">
+			<key-map field-name="attrName" />
+		</relation>
+		<relation type="many" rel-entity-name="OperationAttributeLogValues">
+			<key-map field-name="attrName" />
+		</relation>
+		<relation type="many" rel-entity-name="Operation">
+			<key-map field-name="operationTypeId" />
+		</relation>
+	</entity>
+	<entity entity-name="OperationAttributeLog" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="Operation Attribute Time Series Log Entity">
+		<description>Used to store the info for each measurement, the actual value is stored in related OperationAttributeLogValues entity.</description>
+		<field name="logId" type="id"></field>
+		<field name="operationId" type="id"></field>
+		<field name="name" type="object"></field>
+		<field name="logTime" type="date-time"></field>
+		<field name="category" type="very-short">
+			<description>0K,WARNING,ERROR, TDB: need five level</description>
+		</field>
+		<field name="description" type="object"></field>
+		<field name="measurement" type="object"></field>
+		<prim-key field="logId" />
+		<relation type="many" fk-name="MONITOR_LOG_VALUE"
+			rel-entity-name="OperationAttributeLogValues">
+			<key-map field-name="logId" />
+		</relation>
+	</entity>
+	<entity entity-name="OperationStatisticsLog" package-name="com.siteview.ecc.operation"
+	default-resource-name="EccEntityLabels" title="Operation Statistics Log">
+			<field name="logId" type="id"></field>
+			<field name="operationId" type="id"></field>
+			<field name="logTime" type="date-time"></field>
+			<field name="statisticsData" type="object"></field>
+			<field name="mark" type="very-short"></field>
+			<prim-key field="logId" />
+			<relation rel-entity-name="OperationAttributeLogValues" type="many">
+			<key-map field-name="logId"/>
+			</relation>
+	</entity>
+	<entity entity-name="OperationAttributeLogValues" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="Operation log informations">
+		<field name="logId" type="id">
+			<description>logId</description>
+		</field>
+		<field name="attrName" type="id-long-ne"></field>
+		<field name="attrValue" type="long-varchar"></field>
+		<field name="stype" type="numeric">
+			<description>0:integer;1:string;2:boolean....</description>
+		</field>
+		<prim-key field="logId" />
+		<prim-key field="attrName" />
+		<relation type="many" rel-entity-name="OperationTypeAttr">
+			<key-map field-name="attrName" />
+		</relation>
+	</entity>
+	<entity entity-name="OperationGroup" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels"
+		title="Operation Group entity, each operation can only be in one group.">
+		<field name="groupId" type="id">
+			<description>groupId</description>
+		</field>
+		<field name="description" type="description"></field>
+		<prim-key field="groupId" />
+		<relation type="one" fk-name="MONITOR_GROUP" rel-entity-name="Operation">
+			<key-map field-name="groupId" rel-field-name="groupId" />
+		</relation>
+		<relation type="one" fk-name="MONITOR_GROUP_PAR" title="Parent"
+			rel-entity-name="OperationGroup">
+			<key-map field-name="parentTypeId" rel-field-name="groupId" />
+		</relation>
+	</entity>
+	<entity entity-name="Tag" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="Tags for both operations and machines.">
+		<field name="tagId" type="id">
+			<description>tagId</description>
+		</field>
+		<field name="tagName" type="name">
+			<description>tagName</description>
+		</field>
+		<field name="parentTagId" type="id">
+			<description>parent tag</description>
+		</field>
+		<field name="category" type="name">
+			<description>operation, machine</description>
+		</field>
+		<field name="description" type="description"></field>
+		<prim-key field="tagId" />
+		<relation type="one" fk-name="TAG_PAR" title="Parent"
+			rel-entity-name="Tag">
+			<key-map field-name="parentTagId" rel-field-name="tagId" />
+		</relation>
+	</entity>
+	<entity entity-name="OperationTag" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="Tags and operations assignment.">
+		<field name="tagId" type="id">
+			<description>tagId</description>
+		</field>
+		<field name="operationId" type="id">
+			<description>operationId</description>
+		</field>
+		<field name="description" type="description"></field>
+		<prim-key field="tagId" />
+		<prim-key field="operationId" />
+		<relation type="many" fk-name="MONITOR_TAG" title="Operation tag"
+			rel-entity-name="Operation">
+			<key-map field-name="operationId" rel-field-name="operationId" />
+		</relation>
+		<relation type="many" fk-name="TAG_MONITOR" title="Operation tag"
+			rel-entity-name="Tag">
+			<key-map field-name="tagId" rel-field-name="tagId" />
+		</relation>
+	</entity>
+
+	<!--
+		Configuration Item entities: servers, desktop, network device,
+		inventory needs (properties, relationship and changes tracking),
+		monitoring needs
+	-->
+	<entity entity-name="CI" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="CI Entity">
+		<field name="ciId" type="id"></field>
+		<field name="app" type="long-varchar"></field>
+		<field name="ciTypeId" type="id-long"></field>
+		<field name="ciName" type="name"></field>
+		<prim-key field="ciId" />
+		<relation type="one" fk-name="CI_TYPE" rel-entity-name="CIType">
+			<key-map field-name="ciTypeId" />
+		</relation>
+		<relation type="many" rel-entity-name="CITypeAttr">
+			<key-map field-name="ciTypeId" />
+		</relation>
+	</entity>
+	<entity entity-name="CIAttribute" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="CI Attribute Summary Entity">
+		<field name="ciId" type="id"></field>
+		<field name="attrName" type="id-long-ne"></field>
+		<field name="attrValue" type="value"></field>
+		<field name="attrObjValue" type="object"></field>
+		<prim-key field="ciId" />
+		<prim-key field="attrName" />
+		<relation type="one" fk-name="CI_ATTR" rel-entity-name="CI">
+			<key-map field-name="ciId" />
+		</relation>
+		<relation type="many" rel-entity-name="CITypeAttr">
+			<key-map field-name="attrName" />
+		</relation>
+	</entity>
+	<entity entity-name="CIType" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="CI Type Entity">
+		<field name="ciTypeId" type="id-long"></field>
+		<field name="parentTypeId" type="id-long"></field>
+		<field name="description" type="description"></field>
+		<prim-key field="ciTypeId" />
+		<relation type="one" fk-name="CI_TYPPAR" title="Parent"
+			rel-entity-name="CIType">
+			<key-map field-name="parentTypeId" rel-field-name="ciTypeId" />
+		</relation>
+	</entity>
+	<entity entity-name="CITypeAttr" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="CI Type Attribute Entity">
+		<field name="ciTypeId" type="id-long"></field>
+		<field name="attrName" type="id-long-ne"></field>
+		<prim-key field="ciTypeId" />
+		<prim-key field="attrName" />
+		<relation type="one" fk-name="CI_TYPATTR" rel-entity-name="CIType">
+			<key-map field-name="ciTypeId" />
+		</relation>
+		<relation type="many" rel-entity-name="CIAttribute">
+			<key-map field-name="attrName" />
+		</relation>
+		<relation type="many" rel-entity-name="CI">
+			<key-map field-name="ciTypeId" />
+		</relation>
+	</entity>
+
+	<!--  alert entity  -->
+	<entity entity-name="AlertLog" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="Alert Log">
+		<description>Alert log.</description>
+		<field name="id" type="id"></field>
+		<field name="alertId" type="long-varchar"></field>
+		<field name="alerttype" type="id"></field>
+		<field name="name" type="long-varchar"></field>
+		<field name="monitor" type="long-varchar"></field>
+		<field name="receiver" type="description"></field>
+		<field name="title" type="long-varchar"></field>
+		<field name="alerttime" type="date-time"></field>
+		<field name="result" type="long-varchar"></field>
+		<field name="alert_level" type="description"></field>
+		<field name="content" type="very-long"></field>
+		<field name="groupid" type="long-varchar"></field>
+		<field name="responsetime" type="date-time"></field>
+		<field name="responder" type="long-varchar"></field>
+		<field name="responsecontent" type="long-varchar"></field>
+		<field name="cleartime" type="date-time"></field>
+		<field name="times" type="very-short"></field>
+		<prim-key field="id" />
+		<prim-key field="alertId" />
+	</entity>
+
+	<!--  atomValue entity  -->
+	<entity entity-name="atomValue" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="Erlang atom value tables.">
+		<description>Erlang atom values</description>
+		<field name="atom" type="id"></field>
+		<prim-key field="id" />
+	</entity>
+
+	<entity entity-name="Proxy" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels"
+		title="The monitor proxy entity, contains info about the proxy server.">
+		<description>The monitor proxy entity, contains info about the proxy server., such as hostname, node, cookie, platform, stats,masters[],monitors[],machines[]
+      </description>
+		<field name="proxyId" type="id-ne"></field>
+		<field name="host" type="name"></field>
+		<field name="erlangnode" type="name"></field>
+		<field name="cookie" type="short-varchar"></field>
+		<field name="platform" type="name"></field>
+		<prim-key field="proxyId" />
+	</entity>
+
+	<entity entity-name="OperationProxy" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="The proxy and monitor mapping entity.">
+		<description>Mapping the monitors and machines to the proxy.</description>
+		<field name="operationproxyId" type="id-ne"></field>
+		<field name="proxyId" type="id-ne"></field>
+		<field name="ciId" type="id-ne"></field>
+		<prim-key field="operationproxyId" />
+		<relation type="many" rel-entity-name="CI"> <!-- TODO: need to figure out the relationship-->
+			<key-map field-name="ciId" />
+			<!--
+				TODO: need to figure out the relationship
+			-->
+		</relation>
+		<relation type="one-nofk" rel-entity-name="Proxy">
+			<key-map field-name="proxyId" />
+		</relation>
+	</entity>
+
+	<entity entity-name="OperationMachine" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="The monitor and machine mapping entity.">
+		<description>Mapping the monitors to machines, which monitors belong to a machine.</description>
+		<field name="operationId" type="id-ne"></field>
+		<field name="machineId" type="id-ne"></field>
+		<prim-key field="machineId" />
+		<relation type="one-nofk" rel-entity-name="CI">
+			<key-map field-name="operationId" rel-field-name="ciId" />
+			<!--
+				TODO: need to figure out the relationship
+			-->
+		</relation>
+	</entity>
+
+
+	<!--  monitor filter log entity  -->
+	<entity entity-name="monitorfilterlog" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="monitorfilterlog">
+		<description>monitor filter log.</description>
+		<field name="id" type="id"></field>
+		<field name="mid" type="long-varchar"></field>
+		<field name="monitorname" type="object"></field>
+		<field name="groupname" type="object"></field>
+		<field name="confirmtime" type="date-time"></field>
+		<field name="monitordescripe" type="object"></field>
+		<field name="category" type="long-varchar"></field>
+		<field name="monitorlogdescripe" type="object"></field>
+		<prim-key field="id" />
+	</entity>
+
+
+	<!-- monitor Error LOg  -->
+	<entity entity-name="monitorerror" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="monitorerror">
+		<description>monitor error.</description>
+		<field name="errorlogId" type="id"></field>
+		<field name="monitorerrorid" type="long-varchar"></field>
+		<field name="errortype" type="long-varchar"></field>
+		<field name="errordate" type="long-varchar"></field>
+		<field name="errortitle" type="long-varchar"></field>
+		<prim-key field="errorlogId" />
+	</entity>
+
+	<!--  monitor filter entity  -->
+	<entity entity-name="monitorfilter" package-name="com.siteview.ecc.operation"
+		default-resource-name="EccEntityLabels" title="monitorfilter">
+		<description>monitor filter.</description>
+		<field name="id" type="id"></field>
+		<field name="mfid" type="long-varchar"></field>
+		<field name="entityname" type="object"></field>
+		<field name="groupname" type="object"></field>
+		<field name="monitordescripe" type="object"></field>
+		<field name="monitorname" type="object"></field>
+		<field name="monitorstate" type="object"></field>
+		<field name="monitortype" type="object"></field>
+		<field name="monitortypename" type="object"></field>
+		<field name="nodeid" type="long-varchar"></field>
+		<field name="refreshfre" type="long-varchar"></field>
+		<field name="showhidename" type="object"></field>
+		<field name="sort" type="object"></field>
+		<field name="sortname" type="object"></field>
+		<field name="title" type="object"></field>
+		<field name="tagid" type="object"></field>
+		<field name="tagname" type="object"></field>
+		<field name="starttime" type="date-time"></field>
+		<field name="endtime" type="date-time"></field>
+		<prim-key field="id" />
+	</entity>
+
+
+</entitymodel>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ofbiz-containers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/ofbiz-containers.xsd">
+    <container name="erlangnode-container" class="com.dragonflow.erlangecc.ofbiz.ErlangNode">
+        <property name="node" value="ofbiz"/>
+        <property name="cookie" value="3ren"/>
+        <property name="mailBox" value="eccadmin"/>    
+        <property name="NUMBER_OF_THREADS" value="50"/>
+    </container>
+</ofbiz-containers>

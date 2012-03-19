@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+<TemporalExpression tempExprId="MIDNIGHT_DAILY" tempExprTypeId="TIME_OF_DAY_RANGE" string1="1:00:00" string2="1:00:00"/>
+<JobSandbox jobId="ReportStatistics" jobName="Report Statistics Service" runTime="2012-03-15 1:00:00.000" serviceName="QueryOperationIdListService" poolId="pool" runAsUser="system" tempExprId="MIDNIGHT_DAILY" maxRecurrenceCount="-1"/>
+</entity-engine-xml>
