@@ -495,8 +495,14 @@ public class CatalinaContainer implements Container {
             connector = embedded.createConnector(address, port, protocol);
             try {
                 for (ContainerConfig.Container.Property prop: connectorProp.properties.values()) {
-                    connector.setProperty(prop.name, prop.value);
+                   // connector.setProperty(prop.name, prop.value);
                     //connector.setAttribute(prop.name, prop.value);
+                	if(prop.name.equals("keystoreFile"))
+                	{String ofb_home_jks= System.getProperty("ofbiz.home")+"/"+prop.value;
+                     connector.setProperty(prop.name,ofb_home_jks);
+                	}else
+                    connector.setProperty(prop.name, prop.value);
+
                 }
                 embedded.addConnector(connector);
             } catch (Exception e) {

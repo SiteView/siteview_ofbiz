@@ -24,16 +24,17 @@
     </container>
 
     <!-- RMI Service Dispatcher -->
+    <!--  
     <container name="rmi-dispatcher" class="org.ofbiz.service.rmi.RmiServiceContainer">
         <property name="bound-name" value="RMIDispatcher"/>
         <property name="bound-host" value="127.0.0.1"/>
         <property name="bound-port" value="1099"/>
-        <property name="delegator-name" value="default"/>
+        <property name="delegator-name" value="default"/> -->
 <!--
 	    <property name="client-factory" value="org.ofbiz.service.rmi.socket.ssl.SSLClientSocketFactory"/>
         <property name="server-factory" value="org.ofbiz.service.rmi.socket.ssl.SSLServerSocketFactory"/>
  -->        
- 		<property name="client-factory" value="org.ofbiz.service.rmi.socket.zip.CompressionClientSocketFactory"/>
+ 	<!--  	<property name="client-factory" value="org.ofbiz.service.rmi.socket.zip.CompressionClientSocketFactory"/>
 		<property name="server-factory" value="org.ofbiz.service.rmi.socket.zip.CompressionServerSocketFactory"/>
 
         <property name="ssl-keystore" value="framework/base/config/ofbizrmi.jks"/>
@@ -42,7 +43,7 @@
         <property name="ssl-keystore-alias" value="rmissl"/>
         <property name="ssl-client-auth" value="false"/>
     </container>
-    
+    -->
 
     <!-- JavaMail Listener Container - Triggers MCA Rules -->
     <!-- if delete-mail is set to true, will delete messages after fetching them. otherwise, will try to mark them as seen

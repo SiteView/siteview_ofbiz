@@ -39,8 +39,8 @@ import org.ofbiz.entity.GenericEntityException;
 import org.ofbiz.entity.GenericValue;
 import org.ofbiz.entity.model.ModelEntity;
 
-import com.ibm.icu.util.Calendar;
-
+//import com.ibm.icu.util.Calendar;
+import java.util.Calendar;
 /**
  * <p>Counts server hits and tracks statistics for request, events and views
  * <p>Handles total stats since the server started and binned

@@ -24,6 +24,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -282,7 +286,119 @@ public class Config {
             }
         }
     }
+    public static String getPathFromClass(Class cls) throws IOException {  
 
+        String path = null;  
+
+         if (cls == null) {  
+
+             throw new NullPointerException();  
+
+        }  
+
+         URL url = getClassLocationURL(cls);  
+
+         if (url != null) {  
+
+             path = url.getPath();  
+
+            if ("jar".equalsIgnoreCase(url.getProtocol())) {  
+
+                try {  
+
+                    path = new URL(path).getPath();  
+
+                } catch (MalformedURLException e) {  
+
+                }  
+
+                 int location = path.indexOf("!/");  
+
+                if (location != -1) {  
+
+                    path = path.substring(0, location);  
+
+                 }  
+
+             }  
+
+            File file = new File(path);  
+
+             path = file.getCanonicalPath();  
+
+         }  
+
+         return path;  
+
+     }  
+
+    
+
+     private static URL getClassLocationURL(final Class cls) {  
+
+         if (cls == null)  
+
+             throw new IllegalArgumentException("null input: cls");  
+
+         URL result = null;  
+
+        final String clsAsResource = cls.getName().replace('.', '/')  
+
+             .concat(".class");  
+
+         final ProtectionDomain pd = cls.getProtectionDomain();  
+
+         if (pd != null) {  
+
+             final CodeSource cs = pd.getCodeSource();  
+
+             if (cs != null)  
+
+                 result = cs.getLocation();  
+
+             if (result != null) {  
+
+            if ("file".equals(result.getProtocol())) {  
+
+                    try {  
+
+                        if (result.toExternalForm().endsWith(".jar")  
+
+                                 || result.toExternalForm().endsWith(".zip"))  
+
+                             result = new URL("jar:" 
+
+                                     .concat(result.toExternalForm())  
+
+                                     .concat("!/").concat(clsAsResource));  
+
+                         else if (new File(result.getFile()).isDirectory())  
+
+                         result = new URL(result, clsAsResource);  
+
+                     } catch (MalformedURLException ignore) {  
+
+                    }  
+
+                 }  
+
+             }  
+
+         }  
+
+         if (result == null) {  
+
+             final ClassLoader clsLoader = cls.getClassLoader();  
+
+            result = clsLoader != null ? clsLoader.getResource(clsAsResource)  
+
+                 : ClassLoader.getSystemResource(clsAsResource);  
+
+         }  
+
+        return result;  
+
+     } 
     public void readConfig(String config) throws IOException {
         // check the java_version
         String javaVersion = System.getProperty("java.version");
@@ -300,17 +416,59 @@ public class Config {
         System.out.println("Start.java using configuration file " + config);
 
         // set the ofbiz.home
-        if (ofbizHome == null) {
-            ofbizHome = props.getProperty("ofbiz.home", ".");
-            // get a full path
-            if (ofbizHome.equals(".")) {
-                ofbizHome = System.getProperty("user.dir");
-                ofbizHome = ofbizHome.replace('\\', '/');
-                System.out.println("Set OFBIZ_HOME to - " + ofbizHome);
-            }
-        }
-        System.setProperty("ofbiz.home", ofbizHome);
+//        if (ofbizHome == null) {
+//            ofbizHome = props.getProperty("ofbiz.home", ".");
+//            // get a full path
+//            if (ofbizHome.equals(".")) {
+//                ofbizHome = System.getProperty("user.dir");
+//                ofbizHome = ofbizHome.replace('\\', '/');
+//                System.out.println("Set OFBIZ_HOME to - " + ofbizHome);
+//            }
+//        }
+//        System.setProperty("ofbiz.home", ofbizHome);
+        Boolean selfstart=true; 
 
+        if(selfstart)
+        {
+          // set the ofbiz.home
+          if (ofbizHome == null) {
+              ofbizHome = props.getProperty("ofbiz.home", ".");
+              // get a full path
+              if (ofbizHome.equals(".")) {
+                  ofbizHome = System.getProperty("user.dir");
+                  ofbizHome = ofbizHome.replace('\\', '/');
+                  System.out.println("Set OFBIZ_HOME to - " + ofbizHome);
+              }
+          }
+          System.setProperty("ofbiz.home", ofbizHome);
+        }else
+        {
+        String packageName = this.getClass().getResource("").getPath();  
+
+        packageName = packageName.replace("/", "\\");  
+
+        String projectPath = null;  
+
+        try {  
+
+            String packageFullName = Config.getPathFromClass(this.getClass());  
+
+            ofbizHome = packageFullName.substring(0,  
+
+                    packageFullName.indexOf(packageName));
+            System.setProperty("ofbiz.home",ofbizHome);
+            System.out.println("ofbizHome:"+ofbizHome);  
+
+        } catch (IOException e1) {  
+
+            projectPath = null;  
+
+            e1.printStackTrace();  
+
+       } 
+
+        
+        }
         // base config directory
         baseConfig = getOfbizHomeProp(props, "ofbiz.base.config", "framework/base/config");
 
